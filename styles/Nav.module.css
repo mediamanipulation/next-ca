@@ -1,0 +1,27 @@
+.logoNav {
+  margin: 0 0 0 0.45em;
+  text-transform: uppercase;
+  letter-spacing: 0.15rem;
+}
+
+.nav {
+  height: 50px;
+  padding: 10px;
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  justify-content: space-between;
+}
+
+.nav ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+}
+
+.nav ul li a {
+  margin: 5px 15px;
+}
