@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ResponsiveGrid from "./ResponsiveGrid/index";
-function calcResults(customers) {
+function PointsCalculation(customers) {
 
     const months = [
         "January",
@@ -86,7 +86,7 @@ function calcResults(customers) {
     };
 }
 
-const Pt = ({ customers }) => {
+const PointsResults = ({ customers }) => {
     const [transactionData, setTransactionData] = useState(null);
 
     const columns = [
@@ -113,7 +113,7 @@ const Pt = ({ customers }) => {
     ];
 
     useEffect(() => {
-        setTransactionData(calcResults(customers));
+        setTransactionData(PointsCalculation(customers));
     }, []);
 
     if (transactionData == null) {
@@ -141,4 +141,4 @@ const Pt = ({ customers }) => {
 
 }
 
-export default Pt;
+export default PointsResults;

@@ -1,11 +1,11 @@
 import { server } from '../config'
-import Pt from '../components/Pt'
+import PointsResults from '../components/PointsResults'
 
 export default function Points({ customers }) {
 
     return (
         <div>
-            <Pt customers={customers} />
+            <PointsResults customers={customers} />
         </div>
     )
 }
