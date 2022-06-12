@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ResponsiveGrid from "./ResponsiveGrid/index";
 function PointsCalculation(customers) {
 
+    let summaryCustomerSorted = [];
     const months = [
         "January",
         "February",
@@ -33,55 +34,72 @@ function PointsCalculation(customers) {
 
         return { ...transaction, points, month, sum };
     });
-
-    let Customer = {};
-    let TotalPointsCustomer = {};
-    pointsByTransaction.forEach((pointsByTransaction) => {
-        let { id, name, month, points, sum } = pointsByTransaction;
-
-        if (!Customer[id]) {
-            Customer[id] = [];
-        }
-        if (!TotalPointsCustomer[id]) {
-            TotalPointsCustomer[name] = 0;
-        }
-
-        TotalPointsCustomer[name] += sum;
-        if (Customer[id][month]) {
-            Customer[id][month].points += points;
-            Customer[id][month].monthNumber = month;
-            Customer[id][month].numTransactions++;
+    const summaryCustomerPoints = pointsByTransaction.reduce((acc, curr) => {
+        if (!acc[curr.name]) {
+            acc[curr.name] = {
+                name: curr.name,
+                points: curr.points,
+            };
         } else {
-            Customer[id][month] = {
+            acc[curr.name].points += curr.points;
+        }
+        return acc;
+    }
+        , []);
+
+    const summaryCustomer = Object.values(summaryCustomerPoints);
+    summaryCustomerSorted = summaryCustomer.sort((a, b) => b.points - a.points);
+
+    let customer = {};
+    let totalPointsCustomer = {};
+    pointsByTransaction.forEach((pointsByTransaction) => {
+        let { id, name, month, points, sum, summaryCustomerSorted } = pointsByTransaction;
+
+        if (!customer[id]) {
+            customer[id] = [];
+        }
+
+        if (!totalPointsCustomer[id]) {
+            totalPointsCustomer[name] = 0;
+        }
+
+        totalPointsCustomer[name] += sum;
+        if (customer[id][month]) {
+            customer[id][month].points += points;
+            customer[id][month].monthNumber = month;
+            customer[id][month].numTransactions++;
+        } else {
+            customer[id][month] = {
                 id,
                 name,
                 monthNumber: month,
                 month: months[month],
                 numTransactions: 1,
                 sum,
-                points
+                points,
+                summaryCustomerSorted,
             };
         }
 
     });
 
     let total = [];
-    for (var customerKey in Customer) {
-        Customer[customerKey].forEach((cRow) => {
+    for (var customerKey in customer) {
+        customer[customerKey].forEach((cRow) => {
             total.push(cRow);
         });
     }
     let TotalsCustomer = [];
-    for (customerKey in TotalPointsCustomer) {
+    for (customerKey in totalPointsCustomer) {
         TotalsCustomer.push({
             name: customerKey,
-            points: TotalPointsCustomer[customerKey],
+            points: totalPointsCustomer[customerKey],
         });
     }
     return {
         summaryCustomer: total,
         pointsByTransaction,
-        TotalPointsCustomer: TotalsCustomer,
+        totalPointsCustomer: summaryCustomerSorted,
 
     };
 }
@@ -89,7 +107,7 @@ function PointsCalculation(customers) {
 const PointsResults = ({ customers }) => {
     const [transactionData, setTransactionData] = useState(null);
 
-    const columns = [
+    const pointsByMonth = [
         {
             Header: "Customer",
         },
@@ -103,7 +121,7 @@ const PointsResults = ({ customers }) => {
             Header: "Points",
         },
     ];
-    const ColumnsTotals = [
+    const rewardTotals = [
         {
             Header: "Customer",
         },
@@ -126,14 +144,14 @@ const PointsResults = ({ customers }) => {
         <div>
             <ResponsiveGrid
                 data={transactionData.summaryCustomer}
-                title={"Customer Points"}
-                columns={columns}
+                title={"Customer Points By Month"}
+                columns={pointsByMonth}
                 size={"1"}
             />
             <ResponsiveGrid
-                data={transactionData.TotalPointsCustomer}
-                title={"Customer Points Totals"}
-                columns={ColumnsTotals}
+                data={transactionData.totalPointsCustomer}
+                title={"Customer Reward Totals"}
+                columns={rewardTotals}
                 size={"1"}
             />
         </div>
