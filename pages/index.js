@@ -25,7 +25,7 @@ export default function Home({ articles }) {
     <div >
       <Welcome>Welcome to the Customer Point System!</Welcome>
 
-      <TextLink hoverColor="#1f61a3;"><Link href='/points'>Click here to view your points</Link></TextLink>
+      <TextLink hoverColor="#1f61a3;"><Link href='/points'>Click here to view points</Link></TextLink>
 
     </div>
   )
