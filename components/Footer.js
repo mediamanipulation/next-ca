@@ -2,13 +2,11 @@ import footerStyles from '../styles/Footer.module.css'
 
 const Footer = () => {
     return (
-        <div className={footerStyles.container}>
-        <div className={footerStyles.footer}>
+        <footer className={footerStyles.container}>
             <div className={footerStyles.logo}>
-                <span>Customer Point System</span>
+                <p>Customer Point System</p>
             </div>
-        </div>
-        </div>
+        </footer>
     )
 }
 
